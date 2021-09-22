@@ -8,7 +8,13 @@ pub static READ_EVENTS_ERROR: &str = "Error: Can not read events";
 pub static SEND_EVENTS_ERROR: &str = "Error: Can not send events";
 
 // Copyright Strings
-// TODO: Localize / keep in a separate file
 
 pub static COPYRIGHT_TITLE: &str = "Copyright";
 pub static COPYRIGHT_BODY: &str = "ios-sim-manager 2021 - all rights reserved";
+
+// Menu Strings
+
+pub static MENU_TITLE: &str = "Menu";
+pub static HOME_TAB_TITLE: &str = "Home";
+pub static LIST_TAB_TITLE: &str = "Simulators";
+pub static QUIT_TAB_TITLE: &str = "Quit";

@@ -64,9 +64,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let chunks = widgets::layout::build(rect.size());
 
             // Create widgets
+            let menu_widget = widgets::menu::build();
             let copyright_widget = widgets::copyright::build();
 
             // Render widgets
+            rect.render_widget(menu_widget, chunks[0]);
             rect.render_widget(copyright_widget, chunks[2]);
         })?;
 

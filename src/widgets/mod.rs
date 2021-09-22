@@ -5,3 +5,6 @@ pub mod layout;
 
 // Export `copyright` widget
 pub mod copyright;
+
+// Export `menu` widget
+pub mod menu;
