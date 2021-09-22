@@ -1,6 +1,4 @@
-use tui::{
-    layout::{Constraint, Direction, Layout, Rect},
-};
+use tui::layout::{Constraint, Direction, Layout, Rect};
 
 // Builder
 

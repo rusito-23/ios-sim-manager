@@ -1,5 +1,5 @@
 [package]
-name = "ios-sim-utils"
+name = "ios-sim-manager"
 version = "0.1.0"
 edition = "2018"
 

@@ -1,5 +1,6 @@
 mod strings;
 mod widgets;
+mod simctl;
 
 use crossterm::{event::{self, Event as CEvent, KeyCode}, terminal};
 use std::time::{Duration, Instant};
@@ -19,7 +20,7 @@ enum Event<I> {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Allow re-drawing the terminal emulator content
-    terminal::enable_raw_mode().expect(strings::RAW_MODE_ERROR);
+    terminal::enable_raw_mode().unwrap();
 
     // Definitions
     let stdout = io::stdout();
@@ -38,9 +39,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .checked_sub(last_tick.elapsed())
                 .unwrap_or_else(|| Duration::from_secs(0));
 
-            if event::poll(timeout).expect(strings::POLL_ERROR) {
-                if let CEvent::Key(key) = event::read().expect(strings::READ_EVENTS_ERROR) {
-                    tx.send(Event::Input(key)).expect(strings::SEND_EVENTS_ERROR);
+            if event::poll(timeout).unwrap() {
+                if let CEvent::Key(key) = event::read().unwrap() {
+                    tx.send(Event::Input(key)).unwrap();
                 }
             }
 
@@ -52,7 +53,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     });
 
-    // Clear existing terminal items
+    // Clear existing terminal output
     terminal.clear()?;
 
     // Main application loop

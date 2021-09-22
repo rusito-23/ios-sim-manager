@@ -1,11 +1,8 @@
 // Strings used in the ios-sim-manager CLI app
 
-// General Strings
+// Errors
 
-pub static RAW_MODE_ERROR: &str = "Error: Unable to launch application in raw mode";
-pub static POLL_ERROR: &str = "Error: Poll timeout";
-pub static READ_EVENTS_ERROR: &str = "Error: Can not read events";
-pub static SEND_EVENTS_ERROR: &str = "Error: Can not send events";
+pub static LIST_SIM_ERROR: &str = "Failed to retrieve simulators";
 
 // Copyright Strings
 
