@@ -2,6 +2,15 @@ use tui;
 use simctl;
 use crate::strings;
 
+// Constants
+
+const WIDTHS: &[tui::layout::Constraint] = &[
+    tui::layout::Constraint::Percentage(30),
+    tui::layout::Constraint::Percentage(30),
+    tui::layout::Constraint::Percentage(20),
+    tui::layout::Constraint::Percentage(20),
+];
+
 // Builder
 
 pub fn build(devices: &[simctl::Device]) -> tui::widgets::Table<'static> {
@@ -18,12 +27,7 @@ pub fn build(devices: &[simctl::Device]) -> tui::widgets::Table<'static> {
     let table = tui::widgets::Table::new(rows)
         .header(build_header())
         .block(build_block())
-        .widths(&[
-            tui::layout::Constraint::Percentage(25),
-            tui::layout::Constraint::Percentage(25),
-            tui::layout::Constraint::Percentage(25),
-            tui::layout::Constraint::Percentage(25),
-        ]);
+        .widths(WIDTHS);
 
     return table;
 }
