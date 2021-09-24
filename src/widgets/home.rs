@@ -30,12 +30,18 @@ pub fn build(devices: &[simctl::Device]) -> tui::widgets::Table<'static> {
     let table = tui::widgets::Table::new(rows)
         .header(build_header())
         .block(build_block())
+        .highlight_style(build_highlight_style())
         .widths(WIDTHS);
 
     return table;
 }
 
 // Styles
+
+fn build_highlight_style() -> tui::style::Style {
+    return tui::style::Style::default()
+        .fg(tui::style::Color::Cyan)
+}
 
 fn build_header_style() -> tui::style::Style {
     return tui::style::Style::default()

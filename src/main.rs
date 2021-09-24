@@ -56,10 +56,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Clear existing terminal output
     terminal.clear()?;
 
-    // Retrieve available simulators
+    // Initialize simctl
     let simctl = simctl::Simctl::new();
-    let sim_list = simctl.list().unwrap();
-    let devices = sim_list.devices();
+    let mut sim_list = simctl.list().unwrap();
+
+    // Initial state
+    let mut table_state = tui::widgets::TableState::default();
+    table_state.select(Some(0));
 
     // Main application loop
     loop {
@@ -71,12 +74,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             // Create widgets
             let menu_widget = widgets::menu::build();
-            let home_widget = widgets::home::build(devices);
+            let home_widget = widgets::home::build(sim_list.devices());
             let copyright_widget = widgets::copyright::build();
 
             // Render widgets
             rect.render_widget(menu_widget, chunks[0]);
-            rect.render_widget(home_widget, chunks[1]);
+            rect.render_stateful_widget(home_widget, chunks[1], &mut table_state);
             rect.render_widget(copyright_widget, chunks[2]);
         })?;
 
@@ -89,6 +92,34 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     terminal::disable_raw_mode()?;
                     terminal.show_cursor()?;
                     break;
+                }
+
+                // Refresh Event
+                KeyCode::Char('R') => {
+                    sim_list.refresh().unwrap();
+                    break;
+                }
+
+                // Navigation down event
+                KeyCode::Char('j') => {
+                    if let Some(selected) = table_state.selected() {
+                        if selected >= sim_list.devices().len() - 1 {
+                            table_state.select(Some(0));
+                        } else {
+                            table_state.select(Some(selected + 1));
+                        }
+                    }
+                }
+
+                // Navigation up event
+                KeyCode::Char('k') => {
+                    if let Some(selected) = table_state.selected() {
+                        if selected > 0 {
+                            table_state.select(Some(selected - 1));
+                        } else {
+                            table_state.select(Some(sim_list.devices().len() - 1));
+                        }
+                    }
                 }
 
                 // Default event handler
