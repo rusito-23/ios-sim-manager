@@ -94,12 +94,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     break;
                 }
 
-                // Refresh Event
-                KeyCode::Char('R') => {
-                    sim_list.refresh().unwrap();
-                    break;
-                }
-
                 // Navigation down event
                 KeyCode::Char('j') => {
                     if let Some(selected) = table_state.selected() {
