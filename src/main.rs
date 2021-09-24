@@ -1,6 +1,5 @@
 mod strings;
 mod widgets;
-mod simctl;
 
 use crossterm::{event::{self, Event as CEvent, KeyCode}, terminal};
 use std::time::{Duration, Instant};
@@ -10,6 +9,7 @@ use std::sync::mpsc;
 use tui::{backend::CrosstermBackend, Terminal};
 
 // Custom Event Definition
+// TODO: Move to a separate file
 
 enum Event<I> {
     Input(I),
@@ -56,6 +56,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Clear existing terminal output
     terminal.clear()?;
 
+    // Retrieve available simulators
+    let simctl = simctl::Simctl::new();
+    let sim_list = simctl.list().unwrap();
+    let devices = sim_list.devices();
+
     // Main application loop
     loop {
 
@@ -66,10 +71,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             // Create widgets
             let menu_widget = widgets::menu::build();
+            let home_widget = widgets::home::build(devices);
             let copyright_widget = widgets::copyright::build();
 
             // Render widgets
             rect.render_widget(menu_widget, chunks[0]);
+            rect.render_widget(home_widget, chunks[1]);
             rect.render_widget(copyright_widget, chunks[2]);
         })?;
 

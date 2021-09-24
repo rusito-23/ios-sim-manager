@@ -8,3 +8,6 @@ pub mod copyright;
 
 // Export `menu` widget
 pub mod menu;
+
+// Export `home` widget
+pub mod home;
