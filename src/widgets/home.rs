@@ -11,17 +11,20 @@ const WIDTHS: &[tui::layout::Constraint] = &[
     tui::layout::Constraint::Percentage(20),
 ];
 
+static HEADER_TITLES: &[&str] = &[
+    strings::NAME_TITLE,
+    strings::UDID_TITLE,
+];
+
 // Builder
 
 pub fn build(devices: &[simctl::Device]) -> tui::widgets::Table<'static> {
 
     // Create rows
-    let rows: Vec<tui::widgets::Row> = devices.iter().map(|device| {
-        return tui::widgets::Row::new(vec![
-            build_cell(device.name.clone()),
-            build_cell(device.udid.clone()),
-        ]);
-    }).collect();
+    let rows: Vec<tui::widgets::Row> = devices
+        .iter()
+        .map(|device| { build_row(device) })
+        .collect();
 
     // Create table with rows
     let table = tui::widgets::Table::new(rows)
@@ -69,10 +72,15 @@ fn build_cell(text: String) -> tui::widgets::Cell<'static> {
 // Builders
 
 fn build_header() -> tui::widgets::Row<'static> {
+    let cells = HEADER_TITLES.iter().map( |title| { build_header_cell(title.to_string()) });
+    return tui::widgets::Row::new(cells);
+}
+
+fn build_row(device: &simctl::Device) -> tui::widgets::Row<'static> {
     return tui::widgets::Row::new(vec![
-        build_header_cell(strings::NAME_TITLE.to_string()),
-        build_header_cell(strings::UDID_TITLE.to_string()),
-    ])
+        build_cell(device.name.clone()),
+        build_cell(device.udid.clone()),
+    ]);
 }
 
 fn build_block() -> tui::widgets::Block<'static> {
