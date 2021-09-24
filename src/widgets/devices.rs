@@ -1,6 +1,7 @@
 use tui;
 use simctl;
 use crate::strings;
+use crate::device_utils;
 
 // Constants
 
@@ -14,6 +15,8 @@ const WIDTHS: &[tui::layout::Constraint] = &[
 static HEADER_TITLES: &[&str] = &[
     strings::NAME_TITLE,
     strings::UDID_TITLE,
+    strings::STATE_TITLE,
+    strings::RUNTIME_TITLE,
 ];
 
 // Builder
@@ -86,6 +89,8 @@ fn build_row(device: &simctl::Device) -> tui::widgets::Row<'static> {
     return tui::widgets::Row::new(vec![
         build_cell(device.name.clone()),
         build_cell(device.udid.clone()),
+        build_cell(device_utils::get_state(device)),
+        build_cell(device_utils::get_runtime(device)),
     ]);
 }
 

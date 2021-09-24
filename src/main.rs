@@ -1,5 +1,6 @@
 mod strings;
 mod widgets;
+mod device_utils;
 
 use crossterm::{event::{self, Event as CEvent, KeyCode}, terminal};
 use std::time::{Duration, Instant};
@@ -9,7 +10,6 @@ use std::sync::mpsc;
 use tui::{backend::CrosstermBackend, Terminal};
 
 // Custom Event Definition
-// TODO: Move to a separate file
 
 enum Event<I> {
     Input(I),
@@ -58,7 +58,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Initialize simctl
     let simctl = simctl::Simctl::new();
-    let mut sim_list = simctl.list().unwrap();
+    let simctl_list = simctl.list().unwrap();
 
     // Initial state
     let mut table_state = tui::widgets::TableState::default();
@@ -74,7 +74,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             // Create widgets
             let menu_widget = widgets::menu::build();
-            let home_widget = widgets::home::build(sim_list.devices());
+            let home_widget = widgets::devices::build(simctl_list.devices());
             let copyright_widget = widgets::copyright::build();
 
             // Render widgets
@@ -97,7 +97,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 // Navigation down event
                 KeyCode::Char('j') => {
                     if let Some(selected) = table_state.selected() {
-                        if selected >= sim_list.devices().len() - 1 {
+                        if selected >= simctl_list.devices().len() - 1 {
                             table_state.select(Some(0));
                         } else {
                             table_state.select(Some(selected + 1));
@@ -111,7 +111,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         if selected > 0 {
                             table_state.select(Some(selected - 1));
                         } else {
-                            table_state.select(Some(sim_list.devices().len() - 1));
+                            table_state.select(Some(simctl_list.devices().len() - 1));
                         }
                     }
                 }
