@@ -6,9 +6,8 @@ use tui;
 /// Describes the app state
 pub enum State {
     Normal,
-    Search
-    // TODO: Missing States:
-    // Help
+    Search,
+    Help,
     // Message -> Either Success or Error
 }
 
@@ -77,6 +76,14 @@ impl App {
     }
 }
 
+/// Application state management
+impl App {
+    pub fn clear_search(&mut self) {
+        self.input.clear();
+        self.reset_selection();
+    }
+}
+
 /// Application device retrieval
 impl App {
 
@@ -115,11 +122,6 @@ impl App {
 
     /// Copy current device hash
     pub fn copy_udid(&mut self) {
-        // TODO: Implementation
-    }
-
-    /// Show the help pages
-    pub fn show_help(&mut self) {
         // TODO: Implementation
     }
 }

@@ -11,3 +11,6 @@ pub mod menu;
 
 // Export `devices` widget
 pub mod devices;
+
+// Export `help` widget
+pub mod help;

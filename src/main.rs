@@ -35,16 +35,27 @@ fn main() -> Result<(), Box<dyn Error>> {
 
             // Create widgets
             let menu_widget = widgets::menu::build();
-            let home_widget = widgets::devices::build(app.devices());
             let search_bar = widgets::search_bar::build(app.input.clone());
 
             // Render widgets
             rect.render_widget(menu_widget, chunks[0]);
-            rect.render_stateful_widget(home_widget, chunks[1], &mut app.table_state);
             rect.render_widget(search_bar, chunks[2]);
 
-            // Display cursor if needed
+            // Display state driven components
             match app.state {
+
+                // Display devices
+                app::State::Normal => {
+                    let home_widget = widgets::devices::build(app.devices());
+                    rect.render_stateful_widget(home_widget, chunks[1], &mut app.table_state);
+                }
+
+                // Display help
+                app::State::Help => {
+                    let help_widget = widgets::help::build();
+                    rect.render_widget(help_widget, chunks[1]);
+                }
+
                 // Display search bar cursor
                 app::State::Search => {
                     let chunk = chunks[2];
@@ -52,9 +63,6 @@ fn main() -> Result<(), Box<dyn Error>> {
                     let y_pos = chunk.y;
                     rect.set_cursor(x_pos + 1, y_pos + 1);
                 }
-
-                // Hide by default
-                _ => {}
             }
         })?;
 
@@ -81,7 +89,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
                         // Display Help action
                         crossterm::event::KeyCode::Char('H') => {
-                            app.show_help();
+                            app.state = app::State::Help;
                         }
 
                         // Quit event
@@ -98,8 +106,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
                         // Clear search
                         crossterm::event::KeyCode::Esc => {
-                            app.input.clear();
-                            app.reset_selection();
+                            app.clear_search();
                         }
 
                         // Navigation down event
@@ -126,8 +133,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
                         // Clear search
                         crossterm::event::KeyCode::Esc => {
-                            app.input.clear();
-                            app.reset_selection();
+                            app.clear_search();
                             app.state = app::State::Normal;
                         }
 
@@ -142,6 +148,15 @@ fn main() -> Result<(), Box<dyn Error>> {
                         }
 
                         _ => {}
+                    }
+
+                    // Help state events
+                    app::State::Help => match input.code {
+                        // Any key goes back to normal
+                        _ => {
+                            app.clear_search();
+                            app.state = app::State::Normal;
+                        }
                     }
                 }
             },
