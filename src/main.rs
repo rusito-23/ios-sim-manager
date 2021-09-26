@@ -60,6 +60,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let simctl = simctl::Simctl::new();
     let simctl_list = simctl.list().unwrap();
 
+
     // Initial state
     let mut table_state = tui::widgets::TableState::default();
     table_state.select(Some(0));
@@ -74,7 +75,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             // Create widgets
             let menu_widget = widgets::menu::build();
-            let home_widget = widgets::devices::build(simctl_list.devices());
+            let home_widget = widgets::devices::build(simctl_list.devices().iter().collect());
             let copyright_widget = widgets::copyright::build();
 
             // Render widgets

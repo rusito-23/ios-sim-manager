@@ -21,7 +21,7 @@ static HEADER_TITLES: &[&str] = &[
 
 // Builder
 
-pub fn build(devices: &[simctl::Device]) -> tui::widgets::Table<'static> {
+pub fn build(devices: Vec<&simctl::Device>) -> tui::widgets::Table<'static> {
 
     // Create rows
     let rows: Vec<tui::widgets::Row> = devices
