@@ -45,7 +45,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             match app.state {
 
                 // Display devices
-                app::State::Normal => {
+                app::State::Normal | app::State::Search => {
                     let home_widget = widgets::devices::build(app.devices());
                     rect.render_stateful_widget(home_widget, chunks[1], &mut app.table_state);
                 }
@@ -55,14 +55,19 @@ fn main() -> Result<(), Box<dyn Error>> {
                     let help_widget = widgets::help::build();
                     rect.render_widget(help_widget, chunks[1]);
                 }
+            }
 
-                // Display search bar cursor
+            // Display search bar cursor
+            match app.state {
                 app::State::Search => {
                     let chunk = chunks[2];
                     let x_pos = chunk.x + app.input.len() as u16;
                     let y_pos = chunk.y;
                     rect.set_cursor(x_pos + 1, y_pos + 1);
                 }
+
+                // Hide by default
+                _ => {}
             }
         })?;
 

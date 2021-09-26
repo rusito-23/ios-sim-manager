@@ -55,19 +55,21 @@ impl App {
 
     /// Increment the selection
     pub fn increment_selection(&mut self) {
+        let device_count = self.devices().len() - 1;
         if let Some(selected) = self.table_state.selected() {
             if selected > 0 {
                 self.table_state.select(Some(selected - 1));
             } else {
-                self.table_state.select(Some(self.list.devices().len() - 1));
+                self.table_state.select(Some(device_count));
             }
         }
     }
 
     /// Decrement selection
     pub fn decrement_selection(&mut self) {
+        let device_count = self.devices().len() - 1;
         if let Some(selected) = self.table_state.selected() {
-            if selected >= self.list.devices().len() - 1 {
+            if selected >= device_count {
                 self.table_state.select(Some(0));
             } else {
                 self.table_state.select(Some(selected + 1));
