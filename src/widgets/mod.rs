@@ -3,8 +3,8 @@
 // Export `layout`
 pub mod layout;
 
-// Export `copyright` widget
-pub mod copyright;
+// Export `search_bar` widget
+pub mod search_bar;
 
 // Export `menu` widget
 pub mod menu;
