@@ -2,10 +2,12 @@
 
 // Menu Strings
 
-pub static MENU_TITLE: &str = "Menu";
-pub static HOME_TAB_TITLE: &str = "Home";
-pub static LIST_TAB_TITLE: &str = "Simulators";
-pub static QUIT_TAB_TITLE: &str = "Quit";
+pub static MENU_TITLE: &str = " Menu ";
+
+pub static SCREENSHOT_ACTION: &str = "Screenshot";
+pub static COPY_UDID_ACTION: &str = "Copy UDID";
+pub static HELP_ACTION: &str = "Help";
+pub static QUIT_ACTION: &str = "Quit";
 
 // Table Strings
 
@@ -16,7 +18,7 @@ pub static RUNTIME_TITLE: &str = "RUNTIME";
 
 // Search Bar Strings
 
-pub static SEARCH_BAR_TITLE: &str = "Search by name";
+pub static SEARCH_BAR_TITLE: &str = " Press / to search by device name ";
 
 // State Strings
 

@@ -9,6 +9,7 @@ use crossterm;
 use tui::{backend::CrosstermBackend, Terminal};
 
 fn main() -> Result<(), Box<dyn Error>> {
+
     // Allow re-drawing the terminal emulator content
     crossterm::terminal::enable_raw_mode().unwrap();
 
@@ -18,8 +19,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut terminal = Terminal::new(backend)?;
     terminal.clear()?;
 
-    // Setup event receiver and initialize application
+    // Setup event receiver
     let rx = event_manager::setup();
+
+    // Initialize application
     let mut app = app::App::default();
 
     // Main application loop
@@ -66,6 +69,21 @@ fn main() -> Result<(), Box<dyn Error>> {
                     // Normal state events
                     app::State::Normal => match input.code {
 
+                        // Screenshot action
+                        crossterm::event::KeyCode::Char('S') => {
+                            app.take_screenshot();
+                        }
+
+                        // Copy UDID action
+                        crossterm::event::KeyCode::Char('C') => {
+                            app.copy_udid();
+                        }
+
+                        // Display Help action
+                        crossterm::event::KeyCode::Char('H') => {
+                            app.show_help();
+                        }
+
                         // Quit event
                         crossterm::event::KeyCode::Char('Q') => {
                             crossterm::terminal::disable_raw_mode()?;
@@ -73,9 +91,15 @@ fn main() -> Result<(), Box<dyn Error>> {
                             break;
                         }
 
-                        // Begin search event
-                        crossterm::event::KeyCode::Char('S') => {
+                        // Begin search
+                        crossterm::event::KeyCode::Char('/') => {
                             app.state = app::State::Search;
+                        }
+
+                        // Clear search
+                        crossterm::event::KeyCode::Esc => {
+                            app.input.clear();
+                            app.reset_selection();
                         }
 
                         // Navigation down event
@@ -94,6 +118,19 @@ fn main() -> Result<(), Box<dyn Error>> {
                     // Search state events
                     app::State::Search => match input.code {
 
+                        // Apply search
+                        crossterm::event::KeyCode::Enter => {
+                            app.reset_selection();
+                            app.state = app::State::Normal;
+                        }
+
+                        // Clear search
+                        crossterm::event::KeyCode::Esc => {
+                            app.input.clear();
+                            app.reset_selection();
+                            app.state = app::State::Normal;
+                        }
+
                         // Add character to the search
                         crossterm::event::KeyCode::Char(c) => {
                             app.input.push(c);
@@ -102,12 +139,6 @@ fn main() -> Result<(), Box<dyn Error>> {
                         // Remove character from the search
                         crossterm::event::KeyCode::Backspace => {
                             app.input.pop();
-                        }
-
-                        // Back to normal mode
-                        crossterm::event::KeyCode::Esc => {
-                            app.input.clear();
-                            app.state = app::State::Normal;
                         }
 
                         _ => {}

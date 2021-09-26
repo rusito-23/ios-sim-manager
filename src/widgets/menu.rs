@@ -3,10 +3,11 @@ use tui;
 
 // Titles
 
-static MENU_TITLES: [&str; 3] = [
-    strings::HOME_TAB_TITLE,
-    strings::LIST_TAB_TITLE,
-    strings::QUIT_TAB_TITLE,
+static MENU_TITLES: [&str; 4] = [
+    strings::SCREENSHOT_ACTION,
+    strings::COPY_UDID_ACTION,
+    strings::HELP_ACTION,
+    strings::QUIT_ACTION,
 ];
 
 // Builder
