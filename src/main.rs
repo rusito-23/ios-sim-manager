@@ -55,6 +55,12 @@ fn main() -> Result<(), Box<dyn Error>> {
                     let help_widget = widgets::help::build();
                     rect.render_widget(help_widget, chunks[1]);
                 }
+
+                // Display the message
+                app::State::Message(message) => {
+                    let message_widget = widgets::message::build(message);
+                    rect.render_widget(message_widget, chunks[1]);
+                }
             }
 
             // Display search bar cursor
@@ -155,8 +161,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                         _ => {}
                     }
 
-                    // Help state events
-                    app::State::Help => match input.code {
+                    // Help and message state events
+                    app::State::Help | app::State::Message(_) => match input.code {
                         // Any key goes back to normal
                         _ => {
                             app.clear_search();

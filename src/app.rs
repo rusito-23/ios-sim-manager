@@ -2,13 +2,14 @@
 
 use simctl;
 use tui;
+use crate::strings;
 
 /// Describes the app state
 pub enum State {
     Normal,
     Search,
     Help,
-    // Message -> Either Success or Error
+    Message(&'static str)
 }
 
 /// Holds the app state and configuration
@@ -119,11 +120,11 @@ impl App {
 
     /// Take a screenshot for the current selected device
     pub fn take_screenshot(&mut self) {
-        // TODO: Implementation
+        self.state = State::Message(strings::COMING_SOON);
     }
 
     /// Copy current device hash
     pub fn copy_udid(&mut self) {
-        // TODO: Implementation
+        self.state = State::Message(strings::COMING_SOON);
     }
 }

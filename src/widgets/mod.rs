@@ -14,3 +14,6 @@ pub mod devices;
 
 // Export `help` widget
 pub mod help;
+
+// Export `message` widget
+pub mod message;

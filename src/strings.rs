@@ -64,3 +64,7 @@ pub static HELP_HELP_CMD_DESCRIPTION: &str = ": Show this help message";
 
 pub static HELP_APPLY_CMD: &str = "ENTER";
 pub static HELP_APPLY_CMD_DESCRIPTION: &str = ": Apply the current search";
+
+// Coming soon!
+
+pub static COMING_SOON: &str = "Coming soon!";
